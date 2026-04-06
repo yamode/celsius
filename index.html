@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>14℃ - Music Portfolio</title>
+<title>14℃ — 楽曲制作・BGM・インストゥルメンタル | Music Creator</title>
+<meta name="description" content="14℃（じゅうよんど）— ボカロ・インストゥルメンタルを中心に、BGM制作やオリジナル楽曲の制作依頼を承っています。季節や情景を描く音楽をお届けします。">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&display=swap');
 
@@ -25,6 +26,25 @@
   body {
     font-family: 'Zen Kaku Gothic New', 'Noto Sans JP', sans-serif;
     background: var(--bg);
+    background-image:
+      radial-gradient(ellipse at 30% 0%, rgba(126,184,218,0.04) 0%, transparent 50%),
+      linear-gradient(
+        180deg,
+        #0a0a0f 0%,
+        #0d0e18 8%,
+        #0f1020 16%,
+        #10111f 24%,
+        #0e1422 32%,
+        #0c1625 40%,
+        #0e1320 48%,
+        #110f1c 56%,
+        #13101e 64%,
+        #100e1a 72%,
+        #0d0d16 80%,
+        #0b0c14 88%,
+        #0a0a10 100%
+      );
+    background-attachment: fixed;
     color: var(--text);
     line-height: 1.8;
     overflow-x: hidden;
@@ -297,6 +317,16 @@
   .work-desc {
     font-size: 0.85rem;
     color: var(--text-muted);
+  }
+
+  .work-external {
+    flex-shrink: 0;
+    color: var(--text-muted);
+    transition: color 0.3s;
+  }
+
+  .work-item:hover .work-external {
+    color: var(--accent);
   }
 
   /* Contact Form */
@@ -743,6 +773,7 @@
         <div class="work-title">山人-yamado- 季節イベント「雪あかりタイム」音楽</div>
         <div class="work-desc">岩手県西和賀町・山人-yamado- の冬季イベント「雪あかり」にて使用される音楽を制作</div>
       </div>
+      <svg class="work-external" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
     </a>
     <a class="work-item fade-in" href="https://oga.yamado.co.jp" target="_blank" rel="noopener">
       <div class="work-icon">♪</div>
@@ -750,6 +781,7 @@
         <div class="work-title">山人-oga- ラウンジ音楽</div>
         <div class="work-desc">秋田県男鹿市・山人-oga- 館内ラウンジにて使用されるBGMを制作</div>
       </div>
+      <svg class="work-external" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
     </a>
   </div>
 </section>
