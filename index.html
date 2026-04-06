@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>14℃ - Music Portfolio</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&display=swap');
+
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --surface2: #1a1a26;
+    --accent: #7eb8da;
+    --accent2: #a8d4ea;
+    --text: #e0e0e8;
+    --text-muted: #8888a0;
+    --border: #2a2a3a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Zen Kaku Gothic New', 'Noto Sans JP', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.8;
+    overflow-x: hidden;
+  }
+
+  /* Hero Section */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background:
+      radial-gradient(ellipse at 20% 50%, rgba(126,184,218,0.06) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, rgba(168,212,234,0.04) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 80%, rgba(126,184,218,0.03) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .hero-title {
+    font-size: clamp(4rem, 12vw, 10rem);
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    color: var(--accent2);
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    animation: fadeUp 1.2s ease-out 0.3s forwards;
+  }
+
+  .hero-sub {
+    font-size: clamp(0.9rem, 2vw, 1.1rem);
+    font-weight: 300;
+    color: var(--text-muted);
+    letter-spacing: 0.3em;
+    margin-top: 1.5rem;
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    animation: fadeUp 1.2s ease-out 0.7s forwards;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 3rem;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    animation: fadeUp 1.2s ease-out 1.2s forwards;
+    z-index: 1;
+  }
+
+  .scroll-hint span {
+    display: block;
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(to bottom, var(--accent), transparent);
+    margin: 0 auto;
+    animation: scrollLine 2s ease-in-out infinite;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes scrollLine {
+    0%, 100% { opacity: 0.3; transform: scaleY(0.5); }
+    50% { opacity: 1; transform: scaleY(1); }
+  }
+
+  /* Section Common */
+  section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 6rem 2rem;
+  }
+
+  .section-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.8rem;
+  }
+
+  .section-title {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 400;
+    margin-bottom: 3rem;
+    color: var(--text);
+  }
+
+  /* About */
+  .about-text {
+    font-size: 1rem;
+    font-weight: 300;
+    color: var(--text-muted);
+    max-width: 700px;
+    line-height: 2;
+  }
+
+  .about-links {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .about-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 0.9rem;
+    padding: 0.6rem 1.2rem;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    transition: all 0.3s ease;
+  }
+
+  .about-links a:hover {
+    background: rgba(126,184,218,0.08);
+    border-color: var(--accent);
+  }
+
+  /* Discography */
+  .disc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .track-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  .track-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(126,184,218,0.08);
+  }
+
+  .track-thumb {
+    width: 100%;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    display: block;
+    opacity: 0.85;
+    transition: opacity 0.3s;
+  }
+
+  .track-card:hover .track-thumb {
+    opacity: 1;
+  }
+
+  .track-info {
+    padding: 1.2rem 1.4rem;
+  }
+
+  .track-title {
+    font-size: 1.05rem;
+    font-weight: 500;
+    margin-bottom: 0.4rem;
+  }
+
+  .track-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  .track-type {
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    padding: 0.2rem 0.6rem;
+    border-radius: 100px;
+    background: rgba(126,184,218,0.1);
+    color: var(--accent);
+  }
+
+  /* Instrumental section marker */
+  .track-type.inst {
+    background: rgba(180,160,220,0.1);
+    color: #b4a0dc;
+  }
+
+  /* CD type marker */
+  .track-type.cd {
+    background: rgba(218,180,126,0.15);
+    color: #dab47e;
+  }
+
+  .track-tracklist {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-top: 0.5rem;
+    line-height: 1.6;
+  }
+
+  .cd-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 360px));
+  }
+
+  /* Works */
+  .works-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .work-item {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.4rem 1.6rem;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  .work-item:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(126,184,218,0.06);
+  }
+
+  .work-icon {
+    font-size: 1.4rem;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(126,184,218,0.08);
+    border-radius: 10px;
+    flex-shrink: 0;
+  }
+
+  .work-title {
+    font-size: 1.05rem;
+    font-weight: 500;
+    margin-bottom: 0.3rem;
+  }
+
+  .work-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  /* Contact Form */
+  .contact-form {
+    max-width: 600px;
+  }
+
+  .form-group {
+    margin-bottom: 1.4rem;
+  }
+
+  .form-group label {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 0.4rem;
+    letter-spacing: 0.05em;
+  }
+
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 0.95rem;
+    transition: border-color 0.3s;
+    outline: none;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus {
+    border-color: var(--accent);
+  }
+
+  .form-group textarea {
+    min-height: 140px;
+    resize: vertical;
+  }
+
+  .form-group select option {
+    background: var(--surface);
+    color: var(--text);
+  }
+
+  .form-submit {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem 2rem;
+    background: transparent;
+    border: 1px solid var(--accent);
+    border-radius: 100px;
+    color: var(--accent);
+    font-family: inherit;
+    font-size: 0.95rem;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .form-submit:hover {
+    background: rgba(126,184,218,0.1);
+  }
+
+  .form-note {
+    margin-top: 1rem;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+  }
+
+  .form-success {
+    display: none;
+    padding: 1.5rem;
+    background: var(--surface);
+    border: 1px solid var(--accent);
+    border-radius: 12px;
+    text-align: center;
+    color: var(--accent2);
+  }
+
+  /* Stats */
+  .stats-row {
+    display: flex;
+    gap: 3rem;
+    flex-wrap: wrap;
+    margin-bottom: 4rem;
+    padding: 2rem 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-num {
+    font-size: 2.4rem;
+    font-weight: 300;
+    color: var(--accent2);
+  }
+
+  .stat-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    letter-spacing: 0.15em;
+    margin-top: 0.3rem;
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    border-top: 1px solid var(--border);
+  }
+
+  footer a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  /* Nav */
+  nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(10,10,15,0.8);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s;
+  }
+
+  nav.scrolled {
+    border-bottom-color: var(--border);
+  }
+
+  nav .logo {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--accent2);
+    text-decoration: none;
+  }
+
+  nav .nav-links {
+    display: flex;
+    gap: 2rem;
+  }
+
+  nav .nav-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    transition: color 0.3s;
+  }
+
+  nav .nav-links a:hover {
+    color: var(--accent);
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .disc-grid {
+      grid-template-columns: 1fr;
+    }
+    .stats-row {
+      gap: 2rem;
+      justify-content: center;
+    }
+    nav .nav-links {
+      gap: 1rem;
+    }
+    nav .nav-links a {
+      font-size: 0.75rem;
+    }
+  }
+
+  /* Fade-in on scroll */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="#" class="logo">14℃</a>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#discography">Discography</a>
+    <a href="#links">Links</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<div class="hero">
+  <h1 class="hero-title">14℃</h1>
+  <p class="hero-sub">Music Creator &nbsp;/&nbsp; Vocaloid Producer</p>
+  <div class="scroll-hint"><span></span></div>
+</div>
+
+<!-- About -->
+<section id="about">
+  <div class="fade-in">
+    <p class="section-label">About</p>
+    <h2 class="section-title">14℃について</h2>
+    <p class="about-text">
+      初音ミクをボーカルに迎え、季節の移ろいや心の機微を繊細に描くボカロP。
+      春の風、夏の終わり、雨の情景など、自然と感情が溶け合うような楽曲を制作している。
+      インストゥルメンタル作品も手がけ、言葉を超えた音の風景を届けている。
+      2021年より活動を開始し、これまでに12作品を発表。
+    </p>
+    <div class="about-links" id="links">
+      <a href="https://www.youtube.com/@14do53" target="_blank" rel="noopener">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.9 31.9 0 0 0 0 12a31.9 31.9 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1c.3-1.8.5-3.8.5-5.8s-.2-4-.5-5.8zM9.5 15.6V8.4l6.3 3.6-6.3 3.6z"/></svg>
+        YouTube
+      </a>
+      <a href="https://x.com/___o14oo" target="_blank" rel="noopener">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        @___o14oo
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Stats -->
+<section style="padding-top:0">
+  <div class="stats-row fade-in">
+    <div class="stat">
+      <div class="stat-num">12</div>
+      <div class="stat-label">TRACKS</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">8</div>
+      <div class="stat-label">VOCAL</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">4</div>
+      <div class="stat-label">INSTRUMENTAL</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">2021–</div>
+      <div class="stat-label">ACTIVE SINCE</div>
+    </div>
+  </div>
+</section>
+
+<!-- Discography — CD -->
+<section id="discography">
+  <div class="fade-in">
+    <p class="section-label">Discography</p>
+    <h2 class="section-title">CD</h2>
+  </div>
+
+  <div class="disc-grid cd-grid">
+    <a class="track-card fade-in" href="https://shop.yamado.co.jp/items/87192174" target="_blank" rel="noopener">
+      <img class="track-thumb" src="116845f604ec9fa3ed09f247dd1647be.jpg" alt="水平線の記憶" loading="lazy" style="aspect-ratio:1/1;">
+      <div class="track-info">
+        <div class="track-title">水平線の記憶</div>
+        <div class="track-meta">
+          <span>2025</span>
+          <span class="track-type cd">CD — ¥1,100</span>
+        </div>
+        <div class="track-tracklist">1. saisei / 2. kaika / 3. 無謬の光 / 4. 現世より</div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- Discography — YouTube -->
+<section>
+  <div class="fade-in">
+    <p class="section-label">Discography</p>
+    <h2 class="section-title">YouTube</h2>
+  </div>
+
+  <div class="disc-grid">
+    <a class="track-card fade-in" href="https://www.youtube.com/watch?v=iKgZ_LZSits" target="_blank" rel="noopener">
+      <img class="track-thumb" src="https://i.ytimg.com/vi/iKgZ_LZSits/hqdefault.jpg" alt="Overlap" loading="lazy">
+      <div class="track-info">
+        <div class="track-title">Overlap</div>
+        <div class="track-meta">
+          <span>2024</span>
+          <span class="track-type">Vocal — 初音ミク</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="track-card fade-in" href="https://www.youtube.com/watch?v=K2Y8NehM2uU" target="_blank" rel="noopener">
+      <img class="track-thumb" src="https://i.ytimg.com/vi/K2Y8NehM2uU/hqdefault.jpg" alt="月のねごと" loading="lazy">
+      <div class="track-info">
+        <div class="track-title">月のねごと</div>
+        <div class="track-meta">
+          <span>2023</span>
+          <span class="track-type inst">Instrumental</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="track-card fade-in" href="https://www.youtube.com/watch?v=Yyu-yOkJNS4" target="_blank" rel="noopener">
+      <img class="track-thumb" src="https://i.ytimg.com/vi/Yyu-yOkJNS4/hqdefault.jpg" alt="晩夏" loading="lazy">
+      <div class="track-info">
+        <div class="track-title">晩夏</div>
+        <div class="track-meta">
+          <span>2023</span>
+          <span class="track-type inst">Instrumental</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="track-card fade-in" href="https://www.youtube.com/watch?v=VdHPG1eR51s" target="_blank" rel="noopener">
+      <img class="track-thumb" src="https://i.ytimg.com/vi/VdHPG1eR51s/hqdefault.jpg" alt="五月雨、心惑い" loading="lazy">
+      <div class="track-info">
+        <div class="track-title">五月雨、心惑い</div>
+        <div class="track-meta">
+          <span>2023</span>
+          <span class="track-type inst">Instrumental</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="track-card fade-in" href="https://www.youtube.com/watch?v=vtYnyaxvQIM" target="_blank" rel="noopener">
+      <img class="track-thumb" src="https://i.ytimg.com/vi/vtYnyaxvQIM/hqdefault.jpg" alt="エピローグ" loading="lazy">
+      <div class="track-info">
+        <div class="track-title">エピローグ</div>
+        <div class="track-meta">
+          <span>2023</span>
+          <span class="track-type inst">Instrumental</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="track-card fade-in" href="https://www.youtube.com/watch?v=7vNeqxNKNuc" target="_blank" rel="noopener">
+      <img class="track-thumb" src="https://i.ytimg.com/vi/7vNeqxNKNuc/hqdefault.jpg" alt="春疾風" loading="lazy">
+      <div class="track-info">
+        <div class="track-title">春疾風</div>
+        <div class="track-meta">
+          <span>2022</span>
+          <span class="track-type">Vocal — 初音ミク</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="track-card fade-in" href="https://www.youtube.com/watch?v=nWfTyIHbKT4" target="_blank" rel="noopener">
+      <img class="track-thumb" src="https://i.ytimg.com/vi/nWfTyIHbKT4/hqdefault.jpg" alt="裸の少年" loading="lazy">
+      <div class="track-info">
+        <div class="track-title">裸の少年</div>
+        <div class="track-meta">
+          <span>2022 &nbsp;·&nbsp; with umigame</span>
+          <span class="track-type">Vocal — 初音ミク</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="track-card fade-in" href="https://www.youtube.com/watch?v=BOjJh6SkChI" target="_blank" rel="noopener">
+      <img class="track-thumb" src="https://i.ytimg.com/vi/BOjJh6SkChI/hqdefault.jpg" alt="雨の庭" loading="lazy">
+      <div class="track-info">
+        <div class="track-title">雨の庭</div>
+        <div class="track-meta">
+          <span>2022</span>
+          <span class="track-type">Vocal — 初音ミク</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="track-card fade-in" href="https://www.youtube.com/watch?v=ep5ltuRKrt4" target="_blank" rel="noopener">
+      <img class="track-thumb" src="https://i.ytimg.com/vi/ep5ltuRKrt4/hqdefault.jpg" alt="海月姫" loading="lazy">
+      <div class="track-info">
+        <div class="track-title">海月姫</div>
+        <div class="track-meta">
+          <span>2022</span>
+          <span class="track-type">Vocal — 初音ミク</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="track-card fade-in" href="https://www.youtube.com/watch?v=M6G56P7TdoM" target="_blank" rel="noopener">
+      <img class="track-thumb" src="https://i.ytimg.com/vi/M6G56P7TdoM/hqdefault.jpg" alt="君と雨のパレード" loading="lazy">
+      <div class="track-info">
+        <div class="track-title">君と雨のパレード</div>
+        <div class="track-meta">
+          <span>2022</span>
+          <span class="track-type">Vocal — 初音ミク</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="track-card fade-in" href="https://www.youtube.com/watch?v=cJtVPfqead0" target="_blank" rel="noopener">
+      <img class="track-thumb" src="https://i.ytimg.com/vi/cJtVPfqead0/hqdefault.jpg" alt="白日の蜃気楼" loading="lazy">
+      <div class="track-info">
+        <div class="track-title">白日の蜃気楼</div>
+        <div class="track-meta">
+          <span>2022</span>
+          <span class="track-type">Vocal — 初音ミク</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="track-card fade-in" href="https://www.youtube.com/watch?v=If8vDz-tl-c" target="_blank" rel="noopener">
+      <img class="track-thumb" src="https://i.ytimg.com/vi/If8vDz-tl-c/hqdefault.jpg" alt="瞬き" loading="lazy">
+      <div class="track-info">
+        <div class="track-title">瞬き</div>
+        <div class="track-meta">
+          <span>2021</span>
+          <span class="track-type">Vocal — 初音ミク</span>
+        </div>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- Works -->
+<section id="works">
+  <div class="fade-in">
+    <p class="section-label">Collaboration</p>
+    <h2 class="section-title">コラボレーション</h2>
+  </div>
+
+  <div class="works-list">
+    <a class="work-item fade-in" href="https://www.yamado.co.jp" target="_blank" rel="noopener">
+      <div class="work-icon">♪</div>
+      <div class="work-detail">
+        <div class="work-title">山人-yamado- 季節イベント「雪あかりタイム」音楽</div>
+        <div class="work-desc">岩手県西和賀町・山人-yamado- の冬季イベント「雪あかり」にて使用される音楽を制作</div>
+      </div>
+    </a>
+    <a class="work-item fade-in" href="https://oga.yamado.co.jp" target="_blank" rel="noopener">
+      <div class="work-icon">♪</div>
+      <div class="work-detail">
+        <div class="work-title">山人-oga- ラウンジ音楽</div>
+        <div class="work-desc">秋田県男鹿市・山人-oga- 館内ラウンジにて使用されるBGMを制作</div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- Contact -->
+<section id="contact">
+  <div class="fade-in">
+    <p class="section-label">Contact</p>
+    <h2 class="section-title">制作依頼・お問い合わせ</h2>
+  </div>
+
+  <form class="contact-form fade-in" id="contact-form" action="https://formspree.io/f/xbdpqzny" method="POST">
+    <div class="form-group">
+      <label for="name">お名前 *</label>
+      <input type="text" id="name" name="name" required>
+    </div>
+    <div class="form-group">
+      <label for="email">メールアドレス *</label>
+      <input type="email" id="email" name="email" required>
+    </div>
+    <div class="form-group">
+      <label for="category">ご依頼内容</label>
+      <select id="category" name="category">
+        <option value="">選択してください</option>
+        <option value="楽曲制作">楽曲制作（BGM・テーマ曲など）</option>
+        <option value="編曲・アレンジ">編曲・アレンジ</option>
+        <option value="その他">その他のご相談</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="message">メッセージ *</label>
+      <textarea id="message" name="message" placeholder="ご依頼の詳細、ご予算、納期などをお書きください" required></textarea>
+    </div>
+    <button type="submit" class="form-submit">送信する</button>
+    <p class="form-note">※ 通常3日以内にご返信いたします</p>
+  </form>
+
+  <div class="form-success" id="form-success">
+    <p style="font-size:1.2rem; margin-bottom:0.5rem;">送信しました</p>
+    <p style="font-size:0.9rem; color:var(--text-muted);">お問い合わせありがとうございます。内容を確認の上、ご連絡いたします。</p>
+  </div>
+</section>
+
+<footer>
+  <p>14℃ Music Portfolio</p>
+  <p style="margin-top:0.5rem">
+    <a href="https://www.youtube.com/@14do53" target="_blank" rel="noopener">YouTube</a>
+    &nbsp;&middot;&nbsp;
+    <a href="https://x.com/___o14oo" target="_blank" rel="noopener">X (Twitter)</a>
+  </p>
+</footer>
+
+<script>
+  // Scroll fade-in
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // Nav scroll effect
+  window.addEventListener('scroll', () => {
+    document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50);
+  });
+
+  // Contact form submit
+  const form = document.getElementById('contact-form');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = form.querySelector('.form-submit');
+    btn.textContent = '送信中...';
+    btn.disabled = true;
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      });
+      if (res.ok) {
+        form.style.display = 'none';
+        document.getElementById('form-success').style.display = 'block';
+      } else {
+        btn.textContent = '送信に失敗しました。もう一度お試しください';
+        btn.disabled = false;
+      }
+    } catch {
+      btn.textContent = '送信に失敗しました。もう一度お試しください';
+      btn.disabled = false;
+    }
+  });
+</script>
+</body>
+</html>
